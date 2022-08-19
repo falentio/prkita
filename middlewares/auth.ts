@@ -1,5 +1,5 @@
 import { composeMiddleware, Context } from "oak";
-import { compare } from "bcrypt";
+import { compareSync } from "bcrypt";
 import { jwtVerify, SignJWT } from "jose";
 import { params } from "./validator.ts";
 
@@ -61,7 +61,7 @@ export const login = composeMiddleware([
 			ctx.throw(401, "invalid user");
 		}
 
-		const ok = await compare(password, passwordHash);
+		const ok = compareSync(password, passwordHash);
 		if (!ok) {
 			ctx.throw(401, "invalid password");
 		}
