@@ -1,6 +1,5 @@
 import { Router, RouterContext } from "oak";
 import { SupabaseClient } from "supabase";
-import { Web3Storage } from "web3.storage";
 import * as s from "superstruct";
 import { auth } from "~/middlewares/auth.ts";
 import { json, params } from "~/middlewares/validator.ts";
@@ -27,20 +26,21 @@ const date = s.define("Date", (v) => {
 	return new Date(v).toString() !== "Invalid Date";
 });
 
-// deno-lint-ignore no-explicit-any
-const structs: Record<string, s.Struct<any>> = {};
-structs.create = s.object({
+const structsCreate = s.object({
 	subject: s.size(s.string(), 1, 32),
 	description: s.optional(
 		s.size(s.string(), 0, 1024),
 	),
 	dueDate: s.optional(date),
-	attatchments: s.optional(s.array(s.object({
-		url: url,
-		type: s.optional(
-			s.size(s.string(), 0, 16),
-		),
-	}))),
+	attatchments: s.defaulted(
+		s.array(s.object({
+			url: url,
+			type: s.optional(
+				s.size(s.string(), 0, 16),
+			),
+		})),
+		() => [],
+	),
 });
 
 export class Homework extends Router {
@@ -56,7 +56,7 @@ export class Homework extends Router {
 		super.get("/id/:id", (ctx) => this.#id(ctx));
 		// authorization required endpoints
 		super.use(auth);
-		super.post("/create", json(structs.create), (ctx) => this.#create(ctx));
+		super.post("/create", json(structsCreate), (ctx) => this.#create(ctx));
 		super.delete("/delete", params(["id"]), (ctx) => this.#delete(ctx));
 	}
 
@@ -111,7 +111,7 @@ export class Homework extends Router {
 
 	async #delete(ctx: RouterContext<"/delete">) {
 		const id = ctx.request.url.searchParams.get("id");
-		const { data, error } = await this.supabaseClient
+		const { error } = await this.supabaseClient
 			.from("homework")
 			.delete()
 			.eq("id", id);
@@ -123,7 +123,7 @@ export class Homework extends Router {
 	}
 
 	async #create(ctx: RouterContext<"/create">) {
-		const body: s.Infer<typeof structs.create> = ctx.state.body;
+		const body: s.Infer<typeof structsCreate> = ctx.state.body;
 		const homework = await this.supabaseClient
 			.from("homework")
 			.insert([{

@@ -12,8 +12,8 @@ for (const [user, password] of Object.entries(Deno.env.toObject())) {
 	users[user.slice(5).toLowerCase()] = password;
 }
 
-console.log("users: ")
-Object.keys(users).map(user => console.log(user, users[user]))
+console.log("users: ");
+Object.keys(users).map((user) => console.log(user, users[user]));
 
 const secret = new TextEncoder().encode(
 	Deno.env.get("JWT_SECRET") || "Abelia Narindi A.",
@@ -36,7 +36,7 @@ export const auth = async (ctx: Context, next: () => Promise<unknown>) => {
 		algorithms: ["HS384"],
 		audience: Object.keys(users),
 		maxTokenAge: 60 * 60, // 1 Hour
-	}).catch((e) => {
+	}).catch(() => {
 		return null;
 	});
 

@@ -1,7 +1,8 @@
 import { BodyOptions, Context } from "oak";
-import { object, string, Struct, StructError, validate } from "superstruct";
+import { Struct, validate } from "superstruct";
 
-export function json(s: Struct, opts?: BodyOptions<"json">) {
+// deno-lint-ignore no-explicit-any
+export function json(s: Struct<any>, opts?: BodyOptions<"json">) {
 	return async (ctx: Context, next: () => Promise<unknown>) => {
 		const body = ctx.request.body(opts);
 		if (body.type !== "json") {
@@ -21,10 +22,10 @@ export function json(s: Struct, opts?: BodyOptions<"json">) {
 
 export function params(fields: string[]) {
 	return async (ctx: Context, next: () => Promise<unknown>) => {
-		const s = ctx.request.url.searchParams
+		const s = ctx.request.url.searchParams;
 		for (const f of fields) {
 			if (s.get(f) === null) {
-				ctx.throw(400, `params: "${f}" is required`)
+				ctx.throw(400, `params: "${f}" is required`);
 			}
 		}
 

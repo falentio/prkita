@@ -1,12 +1,12 @@
 import "std/dotenv/load.ts";
-import { Application, isHttpError, Router } from "oak";
+import { Application, Router } from "oak";
 import { createClient, SupabaseClient } from "supabase";
 import { auth, login } from "./middlewares/auth.ts";
 import { Homework } from "./services/homework/homework.ts";
 
 const supabaseClient: SupabaseClient = createClient(
-	Deno.env.get("SUPABASE_URL"),
-	Deno.env.get("SUPABASE_KEY"),
+	Deno.env.get("SUPABASE_URL") as string,
+	Deno.env.get("SUPABASE_KEY") as string,
 	{ fetch },
 );
 const homework = new Homework({ supabaseClient }).routes();
