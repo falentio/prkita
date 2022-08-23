@@ -139,7 +139,7 @@ export class Homework extends Router {
 		const attatchments = body.attatchments.map((i) => {
 			return {
 				...i,
-				id: homework.data[0].id,
+				homework_id: homework.data[0].id,
 			};
 		});
 		const homeworkAttatchments = await this.supabaseClient
@@ -153,10 +153,13 @@ export class Homework extends Router {
 		ctx.response.status = 201;
 		ctx.response.body = {
 			...homework.data[0],
+			due_date: undefined,
+			dueDate: homework.data[0].due_date,
 			attatchments: homeworkAttatchments.data.map((i) => {
 				return {
 					...i,
 					id: undefined,
+					homework_id: undefined,
 				};
 			}),
 		};
