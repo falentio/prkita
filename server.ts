@@ -32,7 +32,6 @@ app.addEventListener("error", (evt) => {
 app.use(async (ctx, next) => {
 	const h = ctx.response.headers;
 	h.set("I-Love-You", "Abelia Narindi Agsya");
-	h.set("Cache-Control", "private, no-store, max-age=0");
 	h.set("Access-Control-Allow-Origin", "*");
 	h.set("Access-Control-Allow-Methods", "*");
 	h.set("Access-Control-Max-Age", "86400");
@@ -40,6 +39,7 @@ app.use(async (ctx, next) => {
 		ctx.response.status = 204
 		return
 	}
+	h.set("Cache-Control", "private, no-store, max-age=0");
 	await next();
 });
 app.use(r.routes());
