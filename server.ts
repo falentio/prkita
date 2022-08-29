@@ -39,6 +39,8 @@ app.use(async (ctx, next) => {
 		await next()
 	} catch (e) {
 		if (e.status < 500) {
+			ctx.response.status = e.status
+			ctx.response.messsage = e.expose ? e.message : e.status
 			return;
 		}
 		throw e
