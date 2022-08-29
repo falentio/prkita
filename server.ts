@@ -34,6 +34,7 @@ app.use(async (ctx, next) => {
 	h.set("I-Love-You", "Abelia Narindi Agsya");
 	h.set("Access-Control-Allow-Origin", "*");
 	h.set("Access-Control-Allow-Methods", "*");
+	h.set("Access-Control-Expose-Headers", "*");
 	h.set("Access-Control-Allow-Headers", "*");
 	h.set("Access-Control-Max-Age", "86400");
 	h.set("Cache-Control", "private, no-store, max-age=0");
