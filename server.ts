@@ -30,11 +30,11 @@ app.use(async (ctx, next) => {
 	h.set("Access-Control-Allow-Methods", "*");
 	h.set("Access-Control-Allow-Headers", "*");
 	h.set("Access-Control-Max-Age", "86400");
-	h.set("Cache-Control", "private, no-store, max-age=0");
 	if (ctx.request.method == "OPTIONS") {
 		ctx.response.status = 204
 		return
 	}
+	h.set("Cache-Control", "private, no-store, max-age=0");
 	try {
 		await next()
 	} catch (e) {
