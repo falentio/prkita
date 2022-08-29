@@ -34,7 +34,7 @@ app.use(async (ctx, next) => {
 	h.set("I-Love-You", "Abelia Narindi Agsya");
 	h.set("Access-Control-Allow-Origin", "*");
 	h.set("Access-Control-Allow-Methods", "*");
-	h.set("Access-Control-Request-Headers", "Authorization");
+	h.set("Access-Control-Request-Headers", "authorization");
 	h.set("Access-Control-Max-Age", "86400");
 	if (ctx.request.method == "OPTIONS") {
 		ctx.response.status = 204
