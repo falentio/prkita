@@ -23,18 +23,11 @@ export const app = new Application({
 	proxy: Deno.env.get("PROXY") !== undefined,
 });
 
-app.addEventListener("error", (evt) => {
-	if (evt.error.status < 500) {
-		return;
-	}
-	console.error(evt.error);
-});
 app.use(async (ctx, next) => {
 	const h = ctx.response.headers;
 	h.set("I-Love-You", "Abelia Narindi Agsya");
 	h.set("Access-Control-Allow-Origin", "*");
 	h.set("Access-Control-Allow-Methods", "*");
-	h.set("Access-Control-Expose-Headers", "*");
 	h.set("Access-Control-Allow-Headers", "*");
 	h.set("Access-Control-Max-Age", "86400");
 	h.set("Cache-Control", "private, no-store, max-age=0");
@@ -42,7 +35,14 @@ app.use(async (ctx, next) => {
 		ctx.response.status = 204
 		return
 	}
-	await next();
+	try {
+		await next()
+	} catch (e) {
+		if (e.status < 500) {
+			return;
+		}
+		throw e
+	}
 });
 app.use(r.routes());
 
