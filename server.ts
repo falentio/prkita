@@ -34,6 +34,10 @@ app.use(async (ctx, next) => {
 	h.set("I-Love-You", "Abelia Narindi Agsya");
 	h.set("Cache-Control", "private, no-store, max-age=0");
 	h.set("Access-Control-Allow-Origin", "*");
+	if (ctx.request.method == "OPTIONS") {
+		ctx.response.status = 204
+		return
+	}
 	await next();
 });
 app.use(r.routes());
