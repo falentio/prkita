@@ -151,7 +151,7 @@ export class Homework extends Router {
 		}
 
 		ctx.response.status = 201;
-		const body = ctx.response.body = {
+		const r = ctx.response.body = {
 			...homework.data[0],
 			due_date: undefined,
 			dueDate: homework.data[0].due_date,
@@ -164,6 +164,6 @@ export class Homework extends Router {
 			}),
 		};
 
-		console.log("created", JSON.stringify(body))
+		console.log("created", JSON.stringify(r))
 	}
 }
