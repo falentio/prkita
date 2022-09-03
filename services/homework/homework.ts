@@ -107,7 +107,6 @@ export class Homework extends Router {
 			ctx.throw(500);
 		}
 		ctx.response.body = data;
-		ctx.response.headers.set("Cache-Control", "public, max-age=10")
 	}
 
 	async #delete(ctx: RouterContext<"/delete">) {
